@@ -7,7 +7,10 @@
     "start": "twilio-run",
     "deploy": "twilio-run deploy"
   },
-  "dependencies": {},
+  "dependencies": {
+    "analytics-node": "^5.1.2",
+    "axios": "^0.23.0"
+  },
   "devDependencies": {
     "twilio-run": "^2.6.0"
   },
