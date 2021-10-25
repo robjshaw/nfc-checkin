@@ -1,0 +1,32 @@
+[
+    {
+        "id": "12345",
+        "name": "Chadstone Shopping Center",
+        "address": "1341 Dandenong Rd, Chadstone VIC 3148"
+    },
+    {
+        "id": "1",
+        "name": "Rosa Mexicano Burwood",
+        "address": "Eat Street, T13/70 Middleborough Rd, Burwood East VIC 3151"
+    },
+    {
+        "id": "2",
+        "name": "Westfield Doncaster",
+        "address": "619 Doncaster Rd, Doncaster VIC 3108"
+    },
+    {
+        "id": "3",
+        "name": "Sydney Opera House",
+        "address": "Bennelong Point, Sydney NSW 2000"
+    },
+    {
+        "id": "4",
+        "name": "Tian Tan Buddha",
+        "address": "Ngong Ping Rd, Lantau Island, Hong Kong"
+    },
+    {
+        "id": "5",
+        "name": "Sik Sik Yuen Wong Tai Sin Temple",
+        "address": "2 Chuk Yuen Rd, Chuk Un, Hong Kong"
+    }
+]

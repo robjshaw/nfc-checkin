@@ -22,8 +22,7 @@ exports.handler = function (context, event, callback) {
 
     axiosInstance.request(options)
         .then(function (response) {
-            // someone we know
-
+            // use already checked in before
             result = response.data;
             result.found = 1
 
@@ -38,6 +37,7 @@ exports.handler = function (context, event, callback) {
             callback(null, result);
         })
         .catch(function (error) {
+            // user first time check in
             segment.identify({
                 userId: event.phonenumber,
                 traits: {
