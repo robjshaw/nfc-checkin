@@ -1,6 +1,4 @@
-exports.handler = function (context, event, callback) {
-
-    const twilioClient = context.getTwilioClient();
+exports.handler = async function (context, event, callback) {
     var faker = require('faker');
     const analytics = require('analytics-node');
 
@@ -14,54 +12,55 @@ exports.handler = function (context, event, callback) {
         }
     });
 
-    var result = {};
-    var options = {
-        method: 'GET',
-        url: '/spaces/' + process.env.SEGMENT_SPACEID + '/collections/users/profiles/user_id:' + event.phonenumber + '/traits'
+    var result = { found: null, checkedIn: null };
+    var userTraitsFound = await getUserTraits(event.phonenumber);
+    if (!userTraitsFound) {
+        // user first time check in
+        userTraits = {
+            name: faker.name.findName(),
+            email: faker.internet.email(),
+            phone: event.phonenumber,
+            state: faker.address.state(),
+            city: faker.address.city(),
+            zip: faker.address.zipCode()
+        }
+
+        segment.identify({
+            userId: event.phonenumber,
+            traits: userTraits
+        });
+    }
+
+    segment.track({
+        userId: event.phonenumber,
+        event: 'checked-in',
+        properties: {
+            site: event.checkin
+        }
+    });
+    result = {
+        userTraits: !userTraitsFound ? userTraits : userTraitsFound
+        , found: !userTraitsFound ? false : true
+        , checkedIn: true
     };
 
-    axiosInstance.request(options)
-        .then(function (response) {
-            // use already checked in before
-            result = response.data;
-            result.found = 1
+    callback(null, result);
 
-            segment.track({
-                userId: event.phonenumber,
-                event: 'checked-in',
-                properties: {
-                    site: event.checkin
-                }
-            });
+    async function getUserTraits(userId) {
+        try {
+            var options = {
+                method: 'GET',
+                url: `/spaces/${process.env.SEGMENT_SPACEID}/collections/users/profiles/user_id:${userId}/traits`
+            };
 
-            callback(null, result);
-        })
-        .catch(function (error) {
-            // user first time check in
-            segment.identify({
-                userId: event.phonenumber,
-                traits: {
-                    name: faker.name.findName(),
-                    email: faker.internet.email(),
-                    phone: event.phonenumber,
-                    state: faker.address.state(),
-                    city: faker.address.city(),
-                    zip: faker.address.zipCode()
-                }
-            });
-
-            segment.track({
-                userId: event.phonenumber,
-                event: 'checked-in',
-                properties: {
-                    site: event.checkin
-                }
-            });
-
-            if (error.response.status != 404) {
-                result.error = error;
+            const response = await axiosInstance.request(options);
+            return response.data.traits;
+        }
+        catch (error) {
+            if (error.response.status != '404') {
+                console.log(error);
             }
-            callback(null, "user is created");
-        });
-
+            return null;
+        }
+    }
 }
