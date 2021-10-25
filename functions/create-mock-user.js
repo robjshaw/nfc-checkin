@@ -1,4 +1,4 @@
-exports.handler = function(context, event, callback) {
+exports.handler = function (context, event, callback) {
 
     const twilioClient = context.getTwilioClient();
     var faker = require('faker');
@@ -7,17 +7,20 @@ exports.handler = function(context, event, callback) {
     const segment = new analytics(process.env.SEGMENT, { flushAt: 1 });
 
     var axios = require('axios');
-    var config = {
-        method: 'get',
-        url: 'https://profiles.segment.com/v1/spaces/' + process.env.SEGMENT_SPACEID + '/collections/users/profiles/user_id:' + event.phonenumber + '/traits',
+    const axiosInstance = axios.create({
+        baseURL: 'https://profiles.segment.com/v1',
         headers: {
             'Authorization': 'Basic ' + process.env.SEGMENT_PERSONAS_PROFILE_KEY
         }
-    };
+    });
 
     var result = {};
+    var options = {
+        method: 'GET',
+        url: '/spaces/' + process.env.SEGMENT_SPACEID + '/collections/users/profiles/user_id:' + event.phonenumber + '/traits'
+    };
 
-    axios(config)
+    axiosInstance.request(options)
         .then(function (response) {
             // someone we know
 
@@ -28,26 +31,22 @@ exports.handler = function(context, event, callback) {
                 userId: event.phonenumber,
                 event: 'checked-in',
                 properties: {
-                    site : event.checkin
+                    site: event.checkin
                 }
             });
 
             callback(null, result);
         })
         .catch(function (error) {
-            // new user!
-
-            console.log(error);
-
             segment.identify({
                 userId: event.phonenumber,
                 traits: {
-                    name : faker.name.findName(),
-                    email : faker.internet.email(),
-                    phone : event.phonenumber,
-                    state : faker.address.state(),
-                    city : faker.address.city(),
-                    zip : faker.address.zipCode()
+                    name: faker.name.findName(),
+                    email: faker.internet.email(),
+                    phone: event.phonenumber,
+                    state: faker.address.state(),
+                    city: faker.address.city(),
+                    zip: faker.address.zipCode()
                 }
             });
 
@@ -55,12 +54,14 @@ exports.handler = function(context, event, callback) {
                 userId: event.phonenumber,
                 event: 'checked-in',
                 properties: {
-                    site : event.checkin
+                    site: event.checkin
                 }
             });
 
-            result.found = 0;
+            if (error.response.status != 404) {
+                result.error = error;
+            }
+            callback(null, "user is created");
+        });
 
-            callback(null, result);
-    });
 }
