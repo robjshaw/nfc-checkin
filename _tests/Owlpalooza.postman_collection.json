@@ -1,0 +1,18 @@
+{
+	"info": {
+		"_postman_id": "ad56376e-4411-4a93-9860-74be67415b73",
+		"name": "Owlpalooza",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "New Request",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": null
+			},
+			"response": []
+		}
+	]
+}
