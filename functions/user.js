@@ -8,11 +8,18 @@ exports.handler = function (context, event, callback) {
         }
     };
 
+    var result = {};
+
     axios(config)
         .then(function (response) {
-            callback(null, response.data);
+            result = response.data;
+            result.found = 1
+            callback(null, result);
         })
         .catch(function (error) {
-            console.log(error);
+
+            result.found = 0;
+
+            callback(null, result);
         });
 }

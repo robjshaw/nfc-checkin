@@ -13,6 +13,42 @@
 				"url": null
 			},
 			"response": []
+		},
+		{
+			"name": "user found",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "from",
+							"value": "+61422222515",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3000/user",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"user"
+					],
+					"query": [
+						{
+							"key": "from",
+							"value": "+61422222515",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }
