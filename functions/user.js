@@ -21,5 +21,5 @@ exports.handler = function (context, event, callback) {
             result.found = 0;
 
             callback(null, result);
-        });
+    });
 }
