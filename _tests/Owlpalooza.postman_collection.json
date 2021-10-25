@@ -6,7 +6,7 @@
 	},
 	"item": [
 		{
-			"name": "New Request",
+			"name": "create_mock_user_checkin",
 			"request": {
 				"method": "GET",
 				"header": [],
