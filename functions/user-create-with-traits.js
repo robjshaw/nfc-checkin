@@ -3,14 +3,7 @@ exports.handler = async function (context, event, callback) {
     const analytics = require('analytics-node');
 
     const segment = new analytics(process.env.SEGMENT, { flushAt: 1 });
-
     var axios = require('axios');
-    const axiosInstance = axios.create({
-        baseURL: 'https://profiles.segment.com/v1',
-        headers: {
-            'Authorization': 'Basic ' + process.env.SEGMENT_PERSONAS_PROFILE_KEY
-        }
-    });
 
     var result = { found: null, checkedIn: null };
     var userTraitsFound = await getUserTraits(event.phonenumber);
@@ -50,10 +43,10 @@ exports.handler = async function (context, event, callback) {
         try {
             var options = {
                 method: 'GET',
-                url: `/spaces/${process.env.SEGMENT_SPACEID}/collections/users/profiles/user_id:${userId}/traits`
+                url: `${process.env.SEGMENT_BASE_URL}/spaces/${process.env.SEGMENT_SPACEID}/collections/users/profiles/user_id:${userId}/traits`
             };
 
-            const response = await axiosInstance.request(options);
+            const response = await axios.request(options);
             return response.data.traits;
         }
         catch (error) {
