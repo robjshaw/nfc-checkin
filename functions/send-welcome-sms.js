@@ -1,8 +1,9 @@
-let jsonSites = require('../assets/sites.json');
+
 exports.handler = async function (context, event, callback) {
-    const client = context.getTwilioClient();
     const axios = require('axios');
-    
+    const jsonSites = await getSites();
+
+    const client = context.getTwilioClient();
     const userTraitsFound = await getUserTraits(event.userId);
     const userEventsFound = await getUserEvents(event.userId);
 
@@ -66,7 +67,7 @@ exports.handler = async function (context, event, callback) {
             };
 
             const response = await axios.request(options);
-            return response.data.data.filter((e)=>e.event == 'checked-in')[0];
+            return response.data.data.filter((e) => e.event == 'checked-in')[0];
         }
         catch (error) {
             if (error.response.status != '404') {
@@ -74,5 +75,15 @@ exports.handler = async function (context, event, callback) {
             }
             return null;
         }
+    }
+
+    async function getSites() {
+        var options = {
+            method: 'GET',
+            url: `https://nfc-checkin-5297-dev.twil.io/sites.json`,
+        };
+
+        const response = await axios.request(options);
+        return response.data;
     }
 }
