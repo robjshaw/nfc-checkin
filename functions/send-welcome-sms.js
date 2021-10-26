@@ -11,7 +11,7 @@ exports.handler = async function (context, event, callback) {
         ? `Welcome to ${siteDetails[0].name}`
         : `Welcome back to ${siteDetails[0].name}`;
 
-    const toPhoneNumber = '+61487306629' //event.userId;
+    const toPhoneNumber = event.userId;
     const messageRequest = client.messages
         .create({
             from: context.TWILIO_PHONE_NUMBER,
