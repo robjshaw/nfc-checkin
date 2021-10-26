@@ -4,11 +4,14 @@ exports.handler = function (context, event, callback) {
     try {
         var options = {
             method: 'GET',
-            url: `${process.env.SEGMENT_BASE_URL}/spaces/${process.env.SEGMENT_SPACEID}/collections/users/profiles/user_id:${userId}/events`
+            url: `${process.env.SEGMENT_BASE_URL}/spaces/${process.env.SEGMENT_SPACEID}/collections/users/profiles/user_id:${userId}/events`,
+            headers: {
+                'Authorization': 'Basic ' + process.env.SEGMENT_PERSONAS_PROFILE_KEY
+            }
         };
 
         const response = await axios.request(options);
-        result = response.data.traits;
+        const result = response.data;
         callback(null, result);
     }
     catch (error) {

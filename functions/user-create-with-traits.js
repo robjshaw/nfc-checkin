@@ -43,7 +43,10 @@ exports.handler = async function (context, event, callback) {
         try {
             var options = {
                 method: 'GET',
-                url: `${process.env.SEGMENT_BASE_URL}/spaces/${process.env.SEGMENT_SPACEID}/collections/users/profiles/user_id:${userId}/traits`
+                url: `${process.env.SEGMENT_BASE_URL}/spaces/${process.env.SEGMENT_SPACEID}/collections/users/profiles/user_id:${userId}/traits`,
+                headers: {
+                    'Authorization': 'Basic ' + process.env.SEGMENT_PERSONAS_PROFILE_KEY
+                }
             };
 
             const response = await axios.request(options);

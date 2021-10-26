@@ -9,8 +9,8 @@ exports.handler = async function (context, event, callback) {
 
     const siteDetails = jsonSites.filter((s) => s.id == userEventsFound.properties.site);
     const messageToSend = event.event == 'checked-in-first-time-enter'
-        ? `Welcome to ${siteDetails[0].name}`
-        : `Welcome back to ${siteDetails[0].name}`;
+        ? `Welcome to '${siteDetails[0].name}''`
+        : `Welcome back to '${siteDetails[0].name}''`;
 
     const toPhoneNumber = event.userId;
     const messageRequest = client.messages
@@ -67,6 +67,12 @@ exports.handler = async function (context, event, callback) {
             };
 
             const response = await axios.request(options);
+            response.data.data.sort(function compare(a, b) {
+                var dateA = new Date(a.timestamp);
+                var dateB = new Date(b.timestamp);
+                return dateA - dateB;
+              });
+
             return response.data.data.filter((e) => e.event == 'checked-in')[0];
         }
         catch (error) {
