@@ -10,7 +10,7 @@ exports.handler = async function (context, event, callback) {
     const siteDetails = userEventsFound ? jsonSites.filter((s) => s.id == userEventsFound.properties.site) : [{ name: "Chadstone" }];
     const messageToSend = event.event == 'checked-in-first-time-feedback-enter'
         ? `Thanks for visiting '${siteDetails[0].name}', let us know how was your experience ?`
-        : `Thanks for being a VIP in '${siteDetails[0].name}', we would like to offer you 10% discount on next meal `;
+        : `Thanks for being a Gold VIP in '${siteDetails[0].name}', we would like to offer you 10% discount on next meal `;
 
     const toPhoneNumber = event.userId;
     const messageRequest = client.messages
