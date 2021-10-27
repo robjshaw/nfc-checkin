@@ -9,8 +9,8 @@ exports.handler = async function (context, event, callback) {
 
     const siteDetails = jsonSites.filter((s) => s.id == userEventsFound.properties.site);
     const messageToSend = event.event == 'checked-in-first-time-enter'
-        ? `Welcome to '${siteDetails[0].name}''`
-        : `Welcome back to '${siteDetails[0].name}''`;
+        ? `Welcome to '${siteDetails[0].name}'`
+        : `Welcome back to '${siteDetails[0].name}'!! You are checked in. Here\'s your personalized Sushi Menu https://bit.ly/3Gthtdx`;
 
     const toPhoneNumber = event.userId;
     const messageRequest = client.messages
@@ -86,7 +86,7 @@ exports.handler = async function (context, event, callback) {
     async function getSites() {
         var options = {
             method: 'GET',
-            url: `https://nfc-checkin-5297-dev.twil.io/sites.json`,
+            url: `http://c860-61-239-112-213.ngrok.io/sites.json`,
         };
 
         const response = await axios.request(options);
