@@ -86,7 +86,7 @@ exports.handler = async function (context, event, callback) {
     async function getSites() {
         var options = {
             method: 'GET',
-            url: `https://nfc-checkin-5297-dev.twil.io/sites.json`,
+            url: `${process.env.TWILIO_SERVICE_URL}/sites.json`,
         };
 
         const response = await axios.request(options);

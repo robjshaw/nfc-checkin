@@ -86,7 +86,7 @@ exports.handler = async function (context, event, callback) {
     async function getSites() {
         var options = {
             method: 'GET',
-            url: `http://c860-61-239-112-213.ngrok.io/sites.json`,
+            url: `${process.env.TWILIO_SERVICE_URL}/sites.json`,
         };
 
         const response = await axios.request(options);
